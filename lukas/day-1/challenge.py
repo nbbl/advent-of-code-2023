@@ -100,19 +100,15 @@ def get_ints(lines: List[str]) -> List[List[int]]:
 '''
 
 
-def sum(ints: List[List[int]]) -> int:
+def summation(ints: List[List[int]]) -> int:
     """
     Combine the ints and sum them
     :param ints:
     :return:
     """
-    sum = 0
-    for _, int_list in enumerate(ints):
-        if len(int_list) != 2:
-            raise Exception("List is wrong length!")
-        number = int(str(int_list[0]) + str(int_list[1]))
-        sum += number
-    return sum
+    build = lambda tup: int(str(tup[0]) + str(tup[1]))
+    return sum([build(int_list) for int_list in ints])
+
 
 
 if __name__ == "__main__":
@@ -124,5 +120,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
     lines = parse_file(args.filename)
     ints = tokenize_all(lines)
-    total = sum(ints)
+    total = summation(ints)
     print(f"Answer: {total}")
