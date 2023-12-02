@@ -1,2 +1,4 @@
 .ipynb_checkpoints/
 Pipfile.lock
+lukas/venv
+lukas/advent.egg-info
