@@ -1,0 +1,6 @@
+cradle:
+  stack:
+    - path: "./lib"
+      component: "aoc2023:lib"
+    - path: "./exe"
+      component: "aoc2023:exe"

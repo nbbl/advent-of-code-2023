@@ -1,0 +1,57 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.35.0.
+--
+-- see: https://github.com/sol/hpack
+
+name:           aoc2023
+version:        0.0.0
+build-type:     Simple
+
+library
+  exposed-modules:
+      Challenge
+      CubeConundrum
+      Trebuchet
+  other-modules:
+      Paths_aoc2023
+  hs-source-dirs:
+      lib
+  default-extensions:
+      DuplicateRecordFields
+      OverloadedRecordDot
+      OverloadedStrings
+      TupleSections
+      TemplateHaskell
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
+  build-depends:
+      attoparsec
+    , base
+    , bytestring
+    , containers
+    , file-embed
+    , text
+  default-language: Haskell2010
+
+executable exe
+  main-is: Main.hs
+  other-modules:
+      Paths_aoc2023
+  hs-source-dirs:
+      exe
+  default-extensions:
+      DuplicateRecordFields
+      OverloadedRecordDot
+      OverloadedStrings
+      TupleSections
+      TemplateHaskell
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
+  build-depends:
+      aoc2023
+    , attoparsec
+    , base
+    , bytestring
+    , containers
+    , file-embed
+    , text
+  default-language: Haskell2010

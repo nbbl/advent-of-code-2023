@@ -1,0 +1,37 @@
+name:                aoc2023
+
+dependencies:
+- base
+- text
+- bytestring
+- file-embed
+- attoparsec
+- containers
+
+default-extensions:
+- DuplicateRecordFields
+- OverloadedRecordDot
+- OverloadedStrings
+- TupleSections
+- TemplateHaskell
+
+ghc-options:
+- -Wall
+- -Wcompat
+- -Widentities
+- -Wincomplete-record-updates
+- -Wincomplete-uni-patterns
+- -Wmissing-export-lists
+- -Wmissing-home-modules
+- -Wpartial-fields
+- -Wredundant-constraints
+
+library:
+  source-dirs: lib
+
+executables:
+  exe:
+    main:                Main.hs
+    source-dirs:         exe
+    dependencies:
+      - aoc2023
