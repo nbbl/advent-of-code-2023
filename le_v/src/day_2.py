@@ -56,13 +56,8 @@ Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
 Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"""
 
 requirements = Counter({"red": 12, "green": 13, "blue": 14})
-valid_ids = []
-powers = []
-for game_id, reveals in map(lambda s: s.split(":"), input_data.split("\n")):
-    if (needed := reduce(operator.or_, (Counter({color: int(m[1]) if (m := re.search(rf"(\d+) {color}", reveal)) else 0 for color in requirements}) for reveal in reveals.split(";")), Counter())) <= requirements:
-        valid_ids.append(int(game_id.removeprefix("Game ")))
-    powers.append(reduce(operator.mul, needed.values()))
+results = [(reduce(operator.mul, (needed := reduce(operator.or_, (Counter({color: int(n)}) for _, n, color in shown), Counter({k: 0 for k in requirements}))).values()), int(game_id) if needed <= requirements else 0) for (game_id, _, _), *shown in map(lambda s: re.findall(r"Game (\d+)| (\d+) (\w+)", s), input_data.split("\n"))]
 
-print(f"Sum of IDs of valid games: {sum(valid_ids)}")
-print(f"Sum of powers of all games: {sum(powers)}")
+print(f"Sum of IDs of valid games: {sum(id_ for _, id_ in results)}")
+print(f"Sum of powers of all games: {sum(power for power, _ in results)}")
 
