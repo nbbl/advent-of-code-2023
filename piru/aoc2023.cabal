@@ -12,6 +12,7 @@ library
   exposed-modules:
       Challenge
       CubeConundrum
+      GearRatios
       Trebuchet
   other-modules:
       Paths_aoc2023

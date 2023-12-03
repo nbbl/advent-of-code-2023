@@ -4,6 +4,7 @@ import System.Environment (getArgs)
 import Challenge
 import qualified Trebuchet
 import qualified CubeConundrum
+import qualified GearRatios
 
 main :: IO ()
 main = do
@@ -20,4 +21,6 @@ selectChallenge "1.1" = getPart Trebuchet.challengePair Part1
 selectChallenge "1.2" = getPart Trebuchet.challengePair Part2
 selectChallenge "2.1" = getPart CubeConundrum.challengePair Part1
 selectChallenge "2.2" = getPart CubeConundrum.challengePair Part2
+selectChallenge "3.1" = getPart GearRatios.challengePair Part1
+selectChallenge "3.2" = getPart GearRatios.challengePair Part2
 selectChallenge s = error $ "invalid challenge: " <> s
