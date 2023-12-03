@@ -64,46 +64,41 @@ input_data = input("Paste data") or """467..114..
 ...$.*....
 .664.598.."""
 
-import itertools
+import itertools as it
 import functools
-import operator
+import operator as op
 
 numbers = []
 symbols = []
 
-groups = [(k, list(a)) for k, a in itertools.groupby(enumerate(input_data), key=lambda x: "num" if x[1].isnumeric() else "skip" if x[1] in [".", "\n"] else "symbol")]
+groups = [(k, list(a)) for k, a in it.groupby(enumerate(input_data), key=lambda x: "skip" if x[1] in [".", "\n"] else "num" if x[1].isnumeric() else "symbol")]
 for group_type, elems in groups:
     match group_type:
         case "skip":
             continue
         case "num":
             idx, values = zip(*elems)
-            values = int("".join(values))
-            numbers.append((set(idx), values))
+            numbers.append((set(idx), int("".join(values))))
         case "symbol":
-            symbols.extend([(i, v) for i, v in elems])
+            symbols.extend(elems)
 grid_width = input_data.find("\n")
 
 print(numbers)
 print(symbols)
 print(grid_width)
 
-valid_indices = {idx: {idx + l + c for l, c in itertools.product((-1, 0, 1), (-grid_width - 1, 0, grid_width + 1))} for idx, values in symbols}
+valid_indices = {idx: {idx + l + c for c, l in it.product((-1, 0, 1), (-grid_width - 1, 0, grid_width + 1))} for idx, _ in symbols}
 print(valid_indices)
-all_valid_indices = set(itertools.chain.from_iterable(valid_indices.values()))
+all_valid_indices = set().union(*valid_indices.values())
 print(all_valid_indices)
 
-
-total_part_numbers = 0
-for indices, value in numbers:
-    if set(indices) & all_valid_indices:
-        total_part_numbers += value
+total_part_numbers = sum(value for indices, value in numbers if indices & all_valid_indices)
 
 total_gear_ratio = 0
-for idx, valid_indices in valid_indices.items():
-    adjacent_numbers = [value for indices, value in numbers if valid_indices & indices]
-    if len(adjacent_numbers) > 1:
-        total_gear_ratio += functools.reduce(operator.mul, adjacent_numbers)
+for gear_indices in valid_indices.values():
+    adjacent_parts = [value for part_indices, value in numbers if gear_indices & part_indices]
+    if len(adjacent_parts) > 1:
+        total_gear_ratio += functools.reduce(op.mul, adjacent_parts)
 
 print(f"Sum of part numbers: {total_part_numbers}")
 print(f"Sum of gear ratios: {total_gear_ratio}")
