@@ -22,7 +22,7 @@
 # In the example above, games 1, 2, and 5 would have been possible if the bag had been loaded with that configuration. However, game 3 would have been impossible because at one point the Elf showed you 20 red cubes at once; similarly, game 4 would also have been impossible because the Elf showed you 15 blue cubes at once. If you add up the IDs of the games that would have been possible, you get 8.
 #
 # Determine which games would have been possible if the bag had been loaded with only 12 red cubes, 13 green cubes, and 14 blue cubes. What is the sum of the IDs of those games?
-import functools
+
 # --- Part Two ---
 # The Elf says they've stopped producing snow because they aren't getting any water! He isn't sure why the water stopped; however, he can show you how to get to the water source to check it out for yourself. It's just up ahead!
 #
@@ -44,7 +44,7 @@ import functools
 #
 # For each game, find the minimum set of cubes that must have been present. What is the sum of the power of these sets?
 
-import operator
+import operator as op
 import re
 from collections import Counter
 from functools import reduce
@@ -56,7 +56,7 @@ Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
 Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"""
 
 requirements = Counter({"red": 12, "green": 13, "blue": 14})
-results = [(reduce(operator.mul, (needed := reduce(operator.or_, (Counter({color: int(n)}) for _, n, color in shown), Counter({k: 0 for k in requirements}))).values()), int(game_id) if needed <= requirements else 0) for (game_id, _, _), *shown in map(lambda s: re.findall(r"Game (\d+)| (\d+) (\w+)", s), input_data.split("\n"))]
+results = [(reduce(op.mul, (needed := reduce(op.or_, (Counter({color: int(n)}) for _, n, color in shown), Counter({k: 0 for k in requirements}))).values()), int(game_id) if needed <= requirements else 0) for (game_id, _, _), *shown in map(lambda s: re.findall(r"Game (\d+)| (\d+) (\w+)", s), input_data.split("\n"))]
 
 print(f"Sum of IDs of valid games: {sum(id_ for _, id_ in results)}")
 print(f"Sum of powers of all games: {sum(power for power, _ in results)}")
