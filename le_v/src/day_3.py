@@ -71,8 +71,7 @@ import operator as op
 numbers = []
 symbols = []
 
-groups = [(k, list(a)) for k, a in it.groupby(enumerate(input_data), key=lambda x: "skip" if x[1] in [".", "\n"] else "num" if x[1].isnumeric() else "symbol")]
-for group_type, elems in groups:
+for group_type, elems in it.groupby(enumerate(input_data), key=lambda x: "skip" if x[1] in [".", "\n"] else "num" if x[1].isnumeric() else "symbol"):
     match group_type:
         case "skip":
             continue
