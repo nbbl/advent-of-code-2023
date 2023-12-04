@@ -13,6 +13,7 @@ library
       Challenge
       CubeConundrum
       GearRatios
+      Scratchcards
       Trebuchet
   other-modules:
       Paths_aoc2023

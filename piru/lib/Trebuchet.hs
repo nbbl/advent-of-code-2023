@@ -1,4 +1,4 @@
-module Trebuchet (challengePair, testData', readData, readDigits, digitParser) where
+module Trebuchet (challengePair) where
 
 import Control.Applicative ((<|>))
 import Data.Attoparsec.Text
