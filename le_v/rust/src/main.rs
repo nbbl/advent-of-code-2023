@@ -89,23 +89,40 @@ impl ConversionMap {
     fn convert_range(self: &Self, input_range: &ConversionRange) -> Vec<ConversionRange> {
         let start = input_range.dst;
         let stop = input_range.dst + input_range.len;
-        let mut matches: Vec<_> = self.ranges.iter().filter(|r| stop > r.src && start < r.src + r.len).collect::<Vec<_>>();
+        let mut matches: Vec<_> = self
+            .ranges
+            .iter()
+            .filter(|r| stop > r.src && start < r.src + r.len)
+            .collect::<Vec<_>>();
         matches.sort_by_key(|r| r.src);
         let mut result: Vec<ConversionRange> = Vec::new();
         let mut current = input_range.dst;
         for r in matches {
-            if r.src > current { // add a filler conversion range
-                result.push(ConversionRange { src: input_range.src + (current - start), dst: input_range.dst + (current - start), len: r.src - current });
+            if r.src > current {
+                // add a filler conversion range
+                result.push(ConversionRange {
+                    src: input_range.src + (current - start),
+                    dst: input_range.dst + (current - start),
+                    len: r.src - current,
+                });
                 current = r.src;
             }
             let new_start = current.max(r.src);
             let new_stop = stop.min(r.src + r.len);
             let new_len = new_stop - new_start;
-            result.push(ConversionRange { src: input_range.src + (current - start), dst: r.dst + (new_start - r.src), len: new_len });
+            result.push(ConversionRange {
+                src: input_range.src + (current - start),
+                dst: r.dst + (new_start - r.src),
+                len: new_len,
+            });
             current = new_stop;
         }
         if current < stop {
-            result.push(ConversionRange { src: input_range.src + (current - start), dst: input_range.dst + (current - start), len: stop - current })
+            result.push(ConversionRange {
+                src: input_range.src + (current - start),
+                dst: input_range.dst + (current - start),
+                len: stop - current,
+            })
         }
         result
     }
@@ -135,7 +152,7 @@ fn parse_maps(input: &str) -> Result<Vec<ConversionMap>> {
                 => ConversionMap {from, to, ranges}
             )
         )
-        .parse(input)?)
+    .parse(input)?)
 }
 
 fn run() -> Result<()> {
@@ -165,7 +182,10 @@ fn run() -> Result<()> {
 
     let mut base = seeds_2;
     for map in &steps {
-        base = base.iter().flat_map(|range| map.convert_range(range)).collect();
+        base = base
+            .iter()
+            .flat_map(|range| map.convert_range(range))
+            .collect();
         base.sort_by_key(|range| range.src);
     }
     dbg!(full_map.get("location").unwrap().iter().min().unwrap());
