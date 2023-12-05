@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use aoc_parse::{parser, prelude::*};
 use thiserror::Error;
 
@@ -66,7 +64,7 @@ struct ConversionRange {
 impl ConversionRange {
     fn convert(self: &Self, n: &u64) -> Option<u64> {
         match n {
-            &n if (n >= self.src && n < (self.src + self.len)) => Some(self.dst + n - self.src),
+            &n if (n >= self.src && n < self.src_stop()) => Some(self.dst + n - self.src),
             _ => None,
         }
     }
@@ -177,34 +175,20 @@ fn run() -> Result<()> {
     let seeds_2: Vec<ConversionRange> = parse_seeds_2(seeds_str)?;
     let steps: Vec<ConversionMap> = parse_maps(input)?;
 
-    let mut full_map: HashMap<String, Vec<u64>> = HashMap::new();
-    full_map.insert("seed".into(), seeds_1);
+    let locations = steps.iter().fold(seeds_1, |values, step| {
+        values.iter().map(|v| step.convert(v)).collect()
+    });
 
-    for map in &steps {
-        let new_values: Vec<u64> = full_map
-            .get(&map.from)
-            .expect("Should be computed before")
+    let transforms = steps.iter().fold(seeds_2, |transforms, step| {
+        transforms
             .iter()
-            .map(|seed| map.convert(seed))
-            .collect();
-        full_map.insert(map.to.clone(), new_values);
-    }
-
-    let mut base = seeds_2;
-    for map in &steps {
-        base = base
-            .iter()
-            .flat_map(|range| map.convert_range(range))
-            .collect();
-        base.sort_by_key(|range| range.src);
-    }
-    println!(
-        "Problem 1: {:?}",
-        full_map.get("location").unwrap().iter().min().unwrap()
-    );
+            .flat_map(|range| step.convert_range(range))
+            .collect()
+    });
+    println!("Problem 1: {:?}", locations.iter().min().unwrap());
     println!(
         "Problem 2: {:?}",
-        base.iter().min_by_key(|range| range.dst).unwrap().dst
+        transforms.iter().min_by_key(|range| range.dst).unwrap().dst
     );
     Ok(())
 }
