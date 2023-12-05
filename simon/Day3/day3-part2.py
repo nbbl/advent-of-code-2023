@@ -2,7 +2,7 @@ import numpy
 def getNumberLength(row, index):
     """
     Returns the "length" of a number whose digits are split into an array by reading forward in the array until
-    it locates a non-digit number e.g. in the array ["4", "2", "6", "9", "."], the  number is 4269, which has a
+    it locates a non-digit character e.g. in the array ["4", "2", "6", "9", "."], the  number is 4269, which has a
     length of 4.
 
     :param row [list]: the array which contains the number
@@ -108,7 +108,7 @@ for row in range(len(grid)):
                 else:
                     asteriskDict[asteriskIndex] = [number]
 
-# filters the asterisk dictionary to isolate asterisk locates which were adjacent to more than one number (i.e. Gears)
+# filters the asterisk dictionary to isolate asterisk locations which were adjacent to more than one number (i.e. Gears)
 gearNums = [value for key, value in asteriskDict.items() if len(asteriskDict[key]) > 1]
 
 # casts all numbers to int
