@@ -72,11 +72,9 @@ Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11"""
 
 total_won = 0
 total_cards = Counter()
-for (card_id, *winning), found in (([int(i) for i in re.findall(r" (\d+)", s)] for s in line.split("|")) for line in input_data.split("\n")):
+for card_id, (winning, found) in enumerate(((set(map(int, re.findall(r" (\d+)(?![:\d])", s))) for s in line.split("|")) for line in input_data.split("\n")), 1):
     total_cards[card_id] += 1
-    winning_numbers = set(winning)
-    found = set(found)
-    if (won := len(winning_numbers & found)) > 0:
+    if (won := len(winning & found)) > 0:
         total_won += 2**(won - 1)
         total_cards += Counter({i: total_cards[card_id] for i in range(card_id + 1, card_id + 1 + won)})
 
