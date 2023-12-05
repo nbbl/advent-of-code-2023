@@ -14,6 +14,7 @@ library
       CubeConundrum
       GearRatios
       Scratchcards
+      Seeds
       Trebuchet
   other-modules:
       Paths_aoc2023
@@ -31,6 +32,7 @@ library
     , base
     , bytestring
     , containers
+    , extra
     , file-embed
     , text
   default-language: Haskell2010
@@ -54,6 +56,7 @@ executable exe
     , base
     , bytestring
     , containers
+    , extra
     , file-embed
     , text
   default-language: Haskell2010

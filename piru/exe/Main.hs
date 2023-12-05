@@ -6,6 +6,7 @@ import qualified Trebuchet
 import qualified CubeConundrum
 import qualified GearRatios
 import qualified Scratchcards
+import qualified Seeds
 
 main :: IO ()
 main = do
@@ -26,4 +27,6 @@ selectChallenge "3.1" = getPart GearRatios.challengePair Part1
 selectChallenge "3.2" = getPart GearRatios.challengePair Part2
 selectChallenge "4.1" = getPart Scratchcards.challengePair Part1
 selectChallenge "4.2" = getPart Scratchcards.challengePair Part2
+selectChallenge "5.1" = getPart Seeds.challengePair Part1
+selectChallenge "5.2" = getPart Seeds.challengePair Part2
 selectChallenge s = error $ "invalid challenge: " <> s
