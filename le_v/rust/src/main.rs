@@ -70,6 +70,12 @@ impl ConversionRange {
             _ => None,
         }
     }
+    fn src_stop(self: &Self) -> u64 {
+        self.src + self.len
+    }
+    fn dst_stop(self: &Self) -> u64 {
+        self.dst + self.len
+    }
 }
 
 #[derive(Debug)]
@@ -87,44 +93,52 @@ impl ConversionMap {
             .unwrap_or(n.clone())
     }
     fn convert_range(self: &Self, input_range: &ConversionRange) -> Vec<ConversionRange> {
-        let start = input_range.dst;
-        let stop = input_range.dst + input_range.len;
-        let mut matches: Vec<_> = self
+        // input is a conversion from X to Y, self converts from Y to Z, this returns a conversion from X to Z.
+        let start_y = input_range.dst;
+        let stop_y = input_range.dst_stop();
+
+        // Get ranges from self whose source (in Y space) intersect the target (in Y space) of input_range.
+        let mut relevant_y_to_z: Vec<_> = self
             .ranges
             .iter()
-            .filter(|r| stop > r.src && start < r.src + r.len)
-            .collect::<Vec<_>>();
-        matches.sort_by_key(|r| r.src);
-        let mut result: Vec<ConversionRange> = Vec::new();
-        let mut current = input_range.dst;
-        for r in matches {
-            if r.src > current {
-                // add a filler conversion range
-                result.push(ConversionRange {
-                    src: input_range.src + (current - start),
-                    dst: input_range.dst + (current - start),
-                    len: r.src - current,
+            .filter(|y_to_z| stop_y > y_to_z.src && start_y < y_to_z.src_stop())
+            .collect();
+        relevant_y_to_z.sort_by_key(|r| r.src);
+        let matches = relevant_y_to_z;
+
+        let mut x_to_z: Vec<ConversionRange> = Vec::new();
+        let mut current_y = start_y;
+        for y_to_z in matches {
+            if y_to_z.src > current_y {
+                // intersection starts further than current_y
+                // We keep original values.
+                x_to_z.push(ConversionRange {
+                    src: input_range.src + (current_y - start_y),
+                    dst: input_range.dst + (current_y - start_y),
+                    len: y_to_z.src - current_y,
                 });
-                current = r.src;
+                current_y = y_to_z.src;
             }
-            let new_start = current.max(r.src);
-            let new_stop = stop.min(r.src + r.len);
-            let new_len = new_stop - new_start;
-            result.push(ConversionRange {
-                src: input_range.src + (current - start),
-                dst: r.dst + (new_start - r.src),
+            // intersection starts now
+            let new_start_y = current_y;
+            let new_stop_y = stop_y.min(y_to_z.src_stop()); // don't go further than needed
+            let new_len = new_stop_y - new_start_y;
+            x_to_z.push(ConversionRange {
+                src: input_range.src + (current_y - start_y),
+                dst: y_to_z.dst + (new_start_y - y_to_z.src),
                 len: new_len,
             });
-            current = new_stop;
+            current_y = new_stop_y;
         }
-        if current < stop {
-            result.push(ConversionRange {
-                src: input_range.src + (current - start),
-                dst: input_range.dst + (current - start),
-                len: stop - current,
+        // no intersection left in [current_y, stop_y[ so we keep original values
+        if current_y < stop_y {
+            x_to_z.push(ConversionRange {
+                src: input_range.src + (current_y - start_y),
+                dst: input_range.dst + (current_y - start_y),
+                len: stop_y - current_y,
             })
         }
-        result
+        x_to_z
     }
 }
 
@@ -157,26 +171,22 @@ fn parse_maps(input: &str) -> Result<Vec<ConversionMap>> {
 
 fn run() -> Result<()> {
     let input = FULL_INPUT;
-    println!("{:?}", input);
+
     let (seeds_str, input) = input.split_at(input.find("\n\n").unwrap() + 2);
-    dbg!(seeds_str);
     let seeds_1: Vec<u64> = parse_seeds_1(seeds_str)?;
-    dbg!(&seeds_1);
     let seeds_2: Vec<ConversionRange> = parse_seeds_2(seeds_str)?;
-    dbg!(&seeds_2);
     let steps: Vec<ConversionMap> = parse_maps(input)?;
 
     let mut full_map: HashMap<String, Vec<u64>> = HashMap::new();
     full_map.insert("seed".into(), seeds_1);
+
     for map in &steps {
-        dbg!(&map.from);
-        dbg!(&map.to);
-        let new_values = full_map
+        let new_values: Vec<u64> = full_map
             .get(&map.from)
             .expect("Should be computed before")
             .iter()
             .map(|seed| map.convert(seed))
-            .collect::<Vec<u64>>();
+            .collect();
         full_map.insert(map.to.clone(), new_values);
     }
 
@@ -188,8 +198,13 @@ fn run() -> Result<()> {
             .collect();
         base.sort_by_key(|range| range.src);
     }
-    dbg!(full_map.get("location").unwrap().iter().min().unwrap());
-    dbg!(&base);
-    dbg!(base.iter().min_by_key(|range| range.dst).unwrap().dst);
+    println!(
+        "Problem 1: {:?}",
+        full_map.get("location").unwrap().iter().min().unwrap()
+    );
+    println!(
+        "Problem 2: {:?}",
+        base.iter().min_by_key(|range| range.dst).unwrap().dst
+    );
     Ok(())
 }
