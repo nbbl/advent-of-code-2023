@@ -106,11 +106,11 @@ humidity-to-location map:
                 .filter(|y_to_z| stop_y > y_to_z.src && start_y < y_to_z.src_stop())
                 .collect();
             relevant_y_to_z.sort_by_key(|r| r.src);
-            let matches = relevant_y_to_z;
+            let relevant_y_to_z = relevant_y_to_z;
 
             let mut x_to_z: Vec<ConversionRange> = Vec::new();
             let mut current_y = start_y;
-            for y_to_z in matches {
+            for y_to_z in relevant_y_to_z {
                 if y_to_z.src > current_y {
                     // intersection starts further than current_y
                     // We keep original values.
