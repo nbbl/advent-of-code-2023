@@ -73,6 +73,7 @@
 
 import re
 from collections import Counter
+from enum import IntEnum
 
 input_data = input("Paste data") or """32T3K 765
 T55J5 684
@@ -80,10 +81,8 @@ KK677 28
 KTJJT 220
 QQQJA 483"""
 
-cards_1_inv = [*map(str, range(2, 10)), "T", "J", "Q", "K", "A"]
-cards_1 = {card: i for i, card in enumerate(cards_1_inv)}
-cards_2_inv = ["J", *map(str, range(2, 10)), "T", "Q", "K", "A"]
-cards_2 = {card: i for i, card in enumerate(cards_2_inv)}
+cards_1 = IntEnum("Cards", [*map(str, range(2, 10)), "T", "J", "Q", "K", "A"])
+cards_2 = IntEnum("Cards", ["J", *map(str, range(2, 10)), "T", "Q", "K", "A"])
 
 
 def convert(iterable):
