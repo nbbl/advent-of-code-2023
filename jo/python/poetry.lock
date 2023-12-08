@@ -1,0 +1,18 @@
+[[package]]
+name = "parameterized"
+version = "0.9.0"
+description = "Parameterized testing with any Python test framework"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+dev = ["jinja2"]
+
+[metadata]
+lock-version = "1.1"
+python-versions = "^3.10"
+content-hash = "a991af2a0901fd882fb0eb5c9799959dbec3d282816fe5467ca860385532a135"
+
+[metadata.files]
+parameterized = []
