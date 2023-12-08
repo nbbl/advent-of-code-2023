@@ -7,4 +7,5 @@ edition = "2021"
 
 [dependencies]
 aoc-parse = "0.2.17"
+num = "0.4.1"
 thiserror = "1.0.50"
