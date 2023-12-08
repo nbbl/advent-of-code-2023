@@ -15,7 +15,7 @@ def getHandType(hand):
     Five distinct cards = 1
 
     :param hand (str): a text representation of 5 cards where each character represents one card
-    :return handScore (int): the score of the hand Type for the input hand ranked 1-7
+    :return handScore (int): the score of the hand Type for the input hand ranked 1-7 (7 is best)
     """
 
     # dictionary with keys representing each possible rank of hand - the numbers describe the frequency of distinct
