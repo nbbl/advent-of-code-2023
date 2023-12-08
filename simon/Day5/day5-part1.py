@@ -45,7 +45,6 @@ locations = []
 for seed in seeds:
     currentNumber = seed
     for map in mapsOrdered:
-        print(map)
         for cypher in mapsDict[map]:
             mappedNumber = map_number(currentNumber, cypher)
             if mappedNumber:
