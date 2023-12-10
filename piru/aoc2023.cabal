@@ -35,7 +35,6 @@ library
       attoparsec
     , base
     , bytestring
-    , combinatorial
     , containers
     , extra
     , file-embed
@@ -60,7 +59,6 @@ executable exe
     , attoparsec
     , base
     , bytestring
-    , combinatorial
     , containers
     , extra
     , file-embed
