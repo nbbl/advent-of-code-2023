@@ -8,6 +8,7 @@ dependencies:
 - attoparsec
 - containers
 - extra
+- combinatorial
 
 default-extensions:
 - DuplicateRecordFields
