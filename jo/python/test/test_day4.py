@@ -19,8 +19,8 @@ class TestDay4(unittest.TestCase):
         ([41, 92, 73, 84, 69], [59, 84, 76, 51, 58, 5, 54, 83], [84]),
         ([31, 18, 13, 56, 72], [74, 77, 10, 23, 35, 67, 36, 11], [])
     ])
-    def test_get_winning_numbers(self, winning_numbers, player_numbers, expected):
-        res = Day4().get_winning_numbers(winning_numbers, player_numbers)
+    def test_matching_numbers(self, winning_numbers, player_numbers, expected):
+        res = Day4().matching_numbers(winning_numbers, player_numbers)
         assert set(res) == set(expected)
 
     @parameterized.expand([
@@ -29,6 +29,12 @@ class TestDay4(unittest.TestCase):
     ])
     def test_card_value(self, card_matches, expected):
         assert Day4().card_value(card_matches) == expected
+
+    @parameterized.expand([
+        ([[[31, 18, 13, 56, 72], [74, 77, 10, 23, 35, 67, 36, 11]]], 0, 1)
+    ])
+    def test_num_cards_won(self, cards, card_index, expected):
+        assert Day4().num_cards_won(cards, card_index) == expected
 
 
 if __name__ == '__main__':
