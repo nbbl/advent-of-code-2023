@@ -6,7 +6,7 @@ res = 0
 histories = ([[int(x) for x in line.split()] for line in f])
 
 # for each history, find the differences between each item and append them as a new 'level' to a list of levels. If all
-# the numbers in the new level are zeros, stop, otherwise repeat the process for the numbers in this new level
+# the numbers in the new level are zeros, stop, otherwise repeat the process using the numbers in this new level
 for history in histories:
     historyLevels = []
     historyLevels.append(history)
