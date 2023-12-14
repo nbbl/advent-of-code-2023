@@ -10,6 +10,7 @@ import qualified Seeds
 import qualified BoatRace
 import qualified CamelCards
 import qualified HauntedWasteland
+import qualified MirageMaintenance
 
 main :: IO ()
 main = do
@@ -38,4 +39,6 @@ selectChallenge "7.1" = getPart CamelCards.challengePair Part1
 selectChallenge "7.2" = getPart CamelCards.challengePair Part2
 selectChallenge "8.1" = getPart HauntedWasteland.challengePair Part1
 selectChallenge "8.2" = getPart HauntedWasteland.challengePair Part2
+selectChallenge "9.1" = getPart MirageMaintenance.challengePair Part1
+selectChallenge "9.2" = getPart MirageMaintenance.challengePair Part2
 selectChallenge s = error $ "invalid challenge: " <> s

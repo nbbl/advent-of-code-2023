@@ -1,3 +1,4 @@
+import os
 import re
 
 from common.solution import Solution
@@ -15,7 +16,7 @@ class Day1(Solution):
     4nineeightseven2
     zoneight234
     7pqrstsixteen"""
-    input_file = "../jupyter/input_day1.txt"
+    input_file = "../jupyter/input_day1.txt"  # Python set as root in IDE
 
     def parse_line(self, line):
         return line
